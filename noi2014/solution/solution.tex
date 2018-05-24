@@ -1,0 +1,68 @@
+\documentclass[a4paper]{article}
+\usepackage{ctex}
+\usepackage{xeCJK}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[affil-it]{authblk}
+\usepackage[top = 1.0in, bottom = 1.0in, left = 1.0in, right = 1.0in]{geometry}
+\usepackage{amsthm}
+
+\setCJKfamilyfont{kai}{KaiTi_GB2312}
+\newcommand{\kai}{\CJKfamily{kai}}
+
+\setCJKfamilyfont{song}{SimSun}
+\newcommand{\song}{\CJKfamily{song}}
+
+\newcommand\spc{\vspace{6pt}}
+\newcommand{\floor}[1]{\lfloor {#1} \rfloor}
+\newcommand{\ceil}[1]{\lceil {#1} \rceil}
+\newcommand*\chem[1]{\ensuremath{\mathrm{#1}}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{problem}{例题}
+
+% \kai
+
+\date{\today}
+%\date{\yestoday}
+\title{$\rm NOI2014$ 解题报告}
+\author{$\mathcal Pyh$}
+
+\begin{document}
+
+\maketitle
+
+\kai
+
+\section{起床困难综合症}
+
+直接按位贪心，记录当前是不是顶着上界即可。
+
+\section{魔法森林}
+
+按照一维排序，然后维护另一维的最小生成树，用LCT完成即可。
+
+\section{动物园}
+
+用维护kmp的方法，维护最长的不超过一半的前后缀相等的位置，复杂度为
+$O(n)$。
+
+\section{随机数生成器}
+
+直接从小到大枚举每个数，然后把选了它就不能选的位置给标记了，复杂度为
+$O(nm)$。
+
+\section{购票}
+
+树形dp，注意到每次是一个斜率优化dp，所以倍增求出上界，然后树链剖分套维护
+链上凸包，然后每次在凸包上二分即可。复杂度为$O(n\log ^3n)$。
+
+\end{document}
