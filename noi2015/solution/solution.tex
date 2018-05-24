@@ -1,0 +1,83 @@
+\documentclass[a4paper]{article}
+\usepackage{ctex}
+\usepackage{xeCJK}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[affil-it]{authblk}
+\usepackage[top = 1.0in, bottom = 1.0in, left = 1.0in, right = 1.0in]{geometry}
+\usepackage{amsthm}
+
+\setCJKfamilyfont{kai}{KaiTi_GB2312}
+\newcommand{\kai}{\CJKfamily{kai}}
+
+\setCJKfamilyfont{song}{SimSun}
+\newcommand{\song}{\CJKfamily{song}}
+
+\newcommand\spc{\vspace{6pt}}
+\newcommand{\floor}[1]{\lfloor {#1} \rfloor}
+\newcommand{\ceil}[1]{\lceil {#1} \rceil}
+\newcommand*\chem[1]{\ensuremath{\mathrm{#1}}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{problem}{例题}
+
+% \kai
+
+\date{\today}
+%\date{\yestoday}
+\title{$\rm NOI2015$ 解题报告}
+\author{$\mathcal Pyh$}
+
+\begin{document}
+
+\maketitle
+
+\kai
+
+\section{程序自动分析}
+
+注意到不等判定没有传递性，于是先把相等判定进行并查集，最后再进行不等操
+作。
+
+标号比较大可以hash。
+
+复杂度为$O(n\alpha(n))$。
+
+\section{软件包管理器}
+
+直接用树链剖分维护即可。
+
+\section{寿司晚宴}
+
+对于只有$\leq \sqrt{n}$的质因子的寿司，可以通过状压dp解决。
+
+对于有$> \sqrt{n}$的质因子的寿司，其中一定只有一个$> \sqrt{n}$的质因子。
+
+于是我们把所有$> \sqrt{n}$的质因子拿出来，那么它们组成的数只能一个人选
+或者不选，于是就可以dp了。
+
+\section{荷马史诗}
+
+注意题目可以抽象为每次合并k个的合并果子。
+
+但是每次可以合并不足k个，所以我们可以添加若干个虚点把$n-1$补足到$k-1$
+的倍数，然后用堆解决即可。
+
+\section{品酒大会}
+
+先构出后缀数组，然后按照height数组从大到小合并集合，每次合并的时候计算
+贡献即可。
+
+\section{小园丁与老司机}
+
+前两问直接dp，第三问就是裸的上下界最小流。
+
+\end{document}

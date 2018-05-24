@@ -1,0 +1,111 @@
+\documentclass[a4paper]{article}
+\usepackage{ctex}
+\usepackage{xeCJK}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[affil-it]{authblk}
+\usepackage[top = 1.0in, bottom = 1.0in, left = 1.0in, right = 1.0in]{geometry}
+\usepackage{amsthm}
+
+\setCJKfamilyfont{kai}{KaiTi_GB2312}
+\newcommand{\kai}{\CJKfamily{kai}}
+
+\setCJKfamilyfont{song}{SimSun}
+\newcommand{\song}{\CJKfamily{song}}
+
+\newcommand\spc{\vspace{6pt}}
+\newcommand{\floor}[1]{\lfloor {#1} \rfloor}
+\newcommand{\ceil}[1]{\lceil {#1} \rceil}
+\newcommand*\chem[1]{\ensuremath{\mathrm{#1}}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{problem}{例题}
+
+% \kai
+
+\date{\today}
+%\date{\yestoday}
+\title{$\rm NOI2017$ 解题报告}
+\author{$\mathcal Pyh$}
+
+\begin{document}
+
+\maketitle
+
+\kai
+
+\section{整数}
+
+把数字按照30位一分块，把每一个块建成线段树。
+
+对于修改，把加上/减去的数字拆成两个对不同块的贡献。这样暴力加减之后只
+有对下一个块的1/-1的贡献，于是线段树一个节点维护区间是不是为全1或者全0，
+找到右边第一个可以进位的位置，左边区间覆盖即可。
+
+时间复杂度为$O(n\log n)$。
+
+\section{蚯蚓排队}
+
+注意到有贡献的字符串不多，全部hash起来就可以了。
+
+\section{泳池}
+
+首先，恰好等于$k$的问题可以通过差分转化成$\leq k$的问题。
+
+可以发现，每一列的贡献只与最低的危险区域相关。我们可以定义这个最低的危
+险区域的高度为这一列的高度。
+
+考虑最裸的求最大子矩形的算法，即对于每一列，求出能往左右扩展的最大长度，
+然后打擂台更新答案。
+
+注意一列的左右扩展的区域被左右第一个高度小于它的列所控制，所以我们枚举
+高度最小（高度相同则最左边）的列的高度，那么它的左右的列就将互不影响，
+为独立的子问题。
+
+我们设$f[i][j]$表示$i$列的泳池，高度最小的列的高度为$j$的概率（暂时不计算
+高度小于$j$的格子安全的概率）。那么我们枚举这是哪一列，然后枚举左右两
+边高度最小的列的g高度进行转移，即$$f[i][j]=[i\cdot (j-1)\leq k](1-{\rm p})\sum_{k=1}^i\left(\sum_{q\geq
+  j}f[k-1][q]\cdot {\rm p}^{(k-1)\cdot (q-j)}\right)\left(\sum_{q\geq
+  j}f[i-k][q]\cdot {\rm p}^{(i-k)\cdot (q-j)}\right)$$
+
+显然可以前缀和优化，注意到满足$i\cdot (j-1)\leq k$的$(i,j)$只有$O(n+k\log
+k)$个，这样就可以做到$O(n^2\log n)$。
+
+可以发现，当$j\geq 2$的时候，满足条件的$(i,j)$只有$O(k\log k)$个，所以
+我们先只计算$j\geq 2$的dp。
+
+然后设$h[n]$为$n$列的泳池满足最大子矩形$\leq k$的概率。
+
+转移的话，我们可以枚举从第$n$列向前，每一列的高度都大于1的，连续的列的
+数量，然后从那一列前面进行转移。
+
+写出转移方程之后发现是一个$k$阶线性递推，于是可以用特征多项式优化到
+$O(k^2\log n)$。
+
+于是总复杂度为$O(k^2(\log n+\log k))$。
+
+\section{游戏}
+
+对于每一个$x$，爆枚它是不是选$A$，然后就可以转化成2-sat问题，复杂度为
+$O(2^d\cdot (n+m))$。
+
+\section{蔬菜}
+
+显然可以贪心，按照收益从大到小枚举每一种蔬菜，然后尽可能（在未变质的条
+件下）尽可能往后放，可以用并查集维护一个位置往左第一个没满的位置在哪里。
+至于额外贡献，可以从每一种蔬菜中拆出一个来做为新的蔬菜，收益为原本的收
+益加上额外贡献，变质时间为原蔬菜最后变质的时间。
+
+\section{分身术}
+
+不会做。
+
+\end{document}

@@ -1,0 +1,126 @@
+\documentclass[a4paper]{article}
+\usepackage{ctex}
+\usepackage{xeCJK}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[affil-it]{authblk}
+\usepackage[top = 1.0in, bottom = 1.0in, left = 1.0in, right = 1.0in]{geometry}
+\usepackage{amsthm}
+
+\setCJKfamilyfont{kai}{KaiTi_GB2312}
+\newcommand{\kai}{\CJKfamily{kai}}
+
+\setCJKfamilyfont{song}{SimSun}
+\newcommand{\song}{\CJKfamily{song}}
+
+\newcommand\spc{\vspace{6pt}}
+\newcommand{\floor}[1]{\lfloor {#1} \rfloor}
+\newcommand{\ceil}[1]{\lceil {#1} \rceil}
+\newcommand*\chem[1]{\ensuremath{\mathrm{#1}}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{problem}{例题}
+
+% \kai
+
+\date{\today}
+%\date{\yestoday}
+\title{$\rm NOI2016$ 解题报告}
+\author{$\mathcal Pyh$}
+
+\begin{document}
+
+\maketitle
+
+\kai
+
+\section{优秀的拆分}
+
+我们只需要求出每一个位置往前有多少个形如AA的字符串，每一个位置往后有多
+少个形如AA的字符串，然后在相接的位置计算贡献即可。
+
+那么我们枚举形如AA的字符串的A的长度$l$。
+
+对于一个$l$，我们隔$l$在原串上设置一个关键点，然后第一个A一定会跨过且
+仅跨过一个关键点。并且第一个A的右侧与下一个关键点的距离一定等于它的左
+侧与它跨过的关键点的距离。
+
+因此，我们可以对于相邻的两个关键点，求出它们向前、后最多能匹配的长度，
+然后用差分做区间加法即可。
+
+如果用后缀数组的话复杂度就是$O(n\log n)$。
+
+\section{网格}
+
+可以发现答案一定不超过2。
+
+无解的条件为，跳蚤的个数不超过1，或者只有两只跳蚤且相邻。
+
+答案为0的条件是，每一个蛐蛐的八联通块，周围的一圈跳蚤都连通。
+
+答案为1的条件是，对于每一个蛐蛐周围的24个点的跳蚤都建一个点，然后连边，
+求出割点，如果存在并且这个割点周围的8个点中有蛐蛐，那么就可行。
+
+否则答案为2。
+
+\section{循环之美}
+
+我们只统计$gcd(x,y)=1$的数对$(x,y)$。
+
+可以发现，$(x,y)$满足条件，当且仅当存在$a,B,l$满足，
+
+\begin{align*}
+  \frac{x\bmod y}{y}&=\frac{a}{B^l}+\frac{a}{B^{2l}}+...\\
+                    &=\frac{a}{B^l-1}\\
+\end{align*}
+
+即$x_0(B^l-1)=ay$，可得$y|x_0(B^l-1)$。
+
+因为$gcd(x_0,y)=1$，所以$y|(B^l-1)$。
+
+那么存在$k$，满足$ky=B^l-1$，可知$gcd(ky,B^l)=1$，所以$gcd(y,B)=1$。
+
+所以答案就为
+\begin{align*}
+  &\sum_{i=1}^n\sum_{j=1}^m[gcd(i,j)=1][gcd(j,B)=1]\\
+  =&\sum_{d=1}^{min}\mu(d)\lfloor\frac{n}{d}\rfloor\sum_{d|j}^{m}[gcd(j,B)=1]\\
+  =&\sum_{d=1}^{min}\mu(d)[gcd(d,B)=1]\lfloor\frac{n}{d}\rfloor\sum_{j=1}^{\lfloor\frac{m}{d}\rfloor}[gcd(j,B)=1]\\
+\end{align*}
+
+下底函数分块，问题转化成求
+
+$$\sum_{i=1}^{\lfloor\frac{n}{x}\rfloor}[gcd(i,B)=1]\mu(i)$$
+
+和求
+
+$$\sum_{i=1}^{\lfloor\frac{n}{x}\rfloor}[gcd(i,B)=1]$$
+
+设$g(x,y)$为$1-x$中与$B$的前$y$个质因子都互质的数的$\mu(x)$之和，那
+么$$g(x,y)=g(x,y-1)+g(x/p_x,y)$$
+
+设$f(x,y)$为$1-x$中与$B$的前$y$个质因子都互质的数的$1$之和，那
+么$$f(x,y)=f(x,y-1)-f(x/p_x,y-1)$$
+
+边界条件是杜教筛可以解决的。
+
+\section{区间}
+
+直接双指针扫描，区间加法维护全局最大值即可，复杂度为$O(n\log n)$。
+
+\section{国王饮水记}
+
+有10个结论，都知道了之后就可以斜率优化进行dp了。
+
+\section{旷野大计算}
+
+提交答案题。
+
+\end{document}
